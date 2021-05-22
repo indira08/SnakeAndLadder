@@ -1,4 +1,6 @@
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Board {
 
@@ -11,6 +13,37 @@ public class Board {
         this.cells = new Cell[numCells + 1];
         for (int i=0; i<numCells+1; i++) {
             this.cells[i] = new Cell(i);
+        }
+        this.iPieces = new ArrayList<>();
+    }
+
+    public void initialize(int numSnakes, int numLadders) {
+        Random random = new Random();
+        int i=0;
+        while(i < numSnakes) {
+            int head = 2 + random.nextInt(numCells - 1);
+            int tail = random.nextInt(head - 1) + 1;
+            boolean isSnakePresent = iPieces.stream()
+                    .anyMatch(iPiece -> iPiece.getSource().equals(getPosition(head)));
+            if (!isSnakePresent) {
+                System.out.println("Snake added. Head : " + getPosition(head).getPos() + " Tail : " +
+                        getPosition(tail).getPos());
+                iPieces.add(new Snake(getPosition(head), getPosition(tail)));
+                i++;
+            }
+        }
+        i=0;
+        while(i < numLadders) {
+            int end = 2 + random.nextInt(numCells - 1);
+            int start = random.nextInt(end - 1) + 1;
+            boolean isLadderPresent = iPieces.stream()
+                    .anyMatch(iPiece -> iPiece.getSource().equals(getPosition(start)));
+            if (!isLadderPresent) {
+                System.out.println("Ladder added. Start : " + getPosition(start).getPos() + " End : " +
+                        getPosition(end).getPos());
+                iPieces.add(new Ladder(getPosition(start), getPosition(end)));
+                i++;
+            }
         }
     }
 
