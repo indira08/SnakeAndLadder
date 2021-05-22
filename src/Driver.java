@@ -31,6 +31,7 @@ public class Driver {
         System.out.println("Game started");
         Game game = new Game(board, players, dice);
         game.start();
+        game.showResults();
         System.out.println("Game finished");
     }
 }
